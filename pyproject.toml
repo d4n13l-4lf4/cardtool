@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cardtool"
-version = "0.0.1"
+version = "0.0.1.dev1"
 authors = [
     {name = "Daniel Aucatoma", email = "d.aucatoma96@gmail.com"}
 ]
@@ -16,10 +16,13 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License"
 ]
-
+dependencies = [
+    "Click"
+]
 
 [project.scripts]
-gencard = 'command.gencard:gencard'
+gencard = 'command.gen_card:gen_card'
+
 
 
 [tool.coverage.run]

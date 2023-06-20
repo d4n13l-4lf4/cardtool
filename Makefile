@@ -19,6 +19,9 @@ coverage:
 	tox -e report
 	open htmlcov/index.html
 
+pre-commit-install:
+	pre-commit install
+
 validate:
 	tox
 
