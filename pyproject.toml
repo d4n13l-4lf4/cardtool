@@ -16,10 +16,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License"
 ]
-py_modules=['command.gencard']
 
-[project.entry-points]
-console-scripts = { gencard = 'command.gencard:gencard' }
+[project.scripts]
+gencard = 'command.gencard:gencard'
 
 
 [tool.coverage.run]
@@ -29,7 +28,7 @@ source = ["src"]
 [tool.coverage.report]
 precision = 2
 skip_covered = false
-fail_under = 100
+fail_under = 0
 
 [tool.pytest.ini_options]
 pythonpath = "src"

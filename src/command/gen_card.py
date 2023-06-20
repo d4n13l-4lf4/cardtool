@@ -15,7 +15,6 @@ import click
     ),
 )
 def gen_card(config, format, name):
-    print(f"NAME IS {name}")
     with open(name, mode="w", encoding="utf-8") as card_file:
         fake_card = [
             {
