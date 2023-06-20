@@ -20,7 +20,7 @@ coverage:
 	open htmlcov/index.html
 
 validate:
-	make lint && make test-cov
+	tox
 
 submit-coverage:
 	curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
