@@ -23,7 +23,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.scripts]
-cardtool = 'command.main_group:cli_card'
+cardtool = 'cardtool.command.main_group:cli_card'
 
 [tool.setuptools_scm]
 
