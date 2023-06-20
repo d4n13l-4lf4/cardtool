@@ -37,9 +37,12 @@ jobs:
     - name: Build package
       run: python -m build
     - name: Publish to TestPyPI
+      env:
+        TEST_PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
+        TEST_PYPI_API_KEY: ${{ secrets.TEST_PYPI_API_KEY }}
       if: ${{ github.ref == 'refs/heads/develop' }}
       run: |
-        twine upload --repository testpypi dist/* -u ${{ secrets.TEST_PYPI_USERNAME }} -p ${{ secrets.TEST_PYPI_API_KEY }}
+        twine upload --repository testpypi dist/* -u "$TEST_PYPI_USERNAME" -p "$TEST_PYPI_API_KEY"
     - name: Publish package
       if: ${{ github.ref == 'refs/heads/main' }}
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
