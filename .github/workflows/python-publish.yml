@@ -24,13 +24,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --upgrade build twine tox
     - name: Validate project (Unit tests)
       run: |
         make validate

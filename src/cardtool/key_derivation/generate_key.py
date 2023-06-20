@@ -1,10 +1,9 @@
-import re
 import sys
 
 from Crypto.Cipher import DES, DES3
 
-from key_derivation.key_type import KeyType
-from key_derivation.key_variant import KeyVariant
+from cardtool.key_derivation.key_type import KeyType
+from cardtool.key_derivation.key_variant import KeyVariant
 
 KeyMask = 0xC0C0C0C000000000C0C0C0C000000000
 KsnMask = 0xFFFFFFFFFFFFFFE00000
@@ -29,15 +28,6 @@ def generate_key(
         return __get_as_hex_string_(data_key)
 
     raise Exception("unknown key variant")
-
-
-def __validate_input_(bdk, ksn) -> str:
-    des_keys = [16, 32, 48]
-    if len(bdk) in des_keys:
-        raise ValueError("unknown key length")
-    if len(ksn) != 20:
-        raise ValueError("invalid ksn")
-    re.compile("")
 
 
 def __get_data_key_(key: int, byteorder=sys.byteorder) -> int:
@@ -141,6 +131,5 @@ def __get_as_hex_string_(number: int) -> str:
 
 
 def __get_ede3_key_(raw_bdk):
-    if len(raw_bdk) == 32:
-        return raw_bdk + raw_bdk[:16]
-    return raw_bdk
+    # DUKPT is designed to use double-length keys only.
+    return raw_bdk + raw_bdk[:16]

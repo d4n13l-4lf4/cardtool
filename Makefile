@@ -5,12 +5,12 @@ freeze:
 	pip freeze > ./requirements.txt
 
 lint:
-	isort ./src ./test
-	black src/
-	flake8 src/
+	isort ./src ./tests
+	black src/ tests/
+	flake8 src/ tests/
 
 test-cov:
-	coverage erase && pytest --cov --cov-append --cov-report=term-missing
+	pytest --cov --cov-append --cov-report=term-missing
 
 test-unit:
 	pytest

@@ -3,7 +3,7 @@ import json
 import click
 
 
-@click.command()
+@click.command(name="gencard")
 @click.option("--config", type=click.Path(exists=True))
 @click.option(
     "--format", type=click.Choice(["json", "yaml", "stdout"], case_sensitive=True)

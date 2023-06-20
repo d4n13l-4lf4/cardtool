@@ -7,3 +7,4 @@ class KeyType(Enum):
     DATA = 2
     MAC = 3
     PIN = 4
+    UNKNOWN = 5
