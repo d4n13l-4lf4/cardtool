@@ -1,10 +1,11 @@
 import json
 
 import click
+from loguru import logger
 
 
 @click.command(name="gencard")
-@click.option("--config", type=click.Path(exists=True))
+@click.option("--config", type=click.Path(exists=True, readable=True))
 @click.option(
     "--format", type=click.Choice(["json", "yaml", "stdout"], case_sensitive=True)
 )
@@ -16,6 +17,7 @@ import click
 )
 def gen_card(config, format, name):
     with open(name, mode="w", encoding="utf-8") as card_file:
+        logger.info("Something awesome!")
         fake_card = [
             {
                 "label": "VISA_PAN",
