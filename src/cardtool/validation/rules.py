@@ -1,0 +1,35 @@
+import re
+
+
+def LengthBetween(min: int, max: int):
+    def __inner_(data: str):
+        len_data = len(data)
+        if len_data < min or len_data > max:
+            raise ValueError(
+                "{0} length is not between ({1}, {2})".format(data, min, max)
+            )
+
+    return __inner_
+
+
+def Length(total: int):
+    def __inner_(data: str):
+        len_data = len(data)
+        if len_data != total:
+            raise ValueError(
+                "{0} does not have required length {1}".format(data, total)
+            )
+
+    return __inner_
+
+
+def Regex(pattern: str, flags: re.RegexFlag = 0):
+    rex = re.compile(pattern)
+
+    def __inner_(data: str):
+        if not re.fullmatch(rex, data, flags=flags):
+            raise ValueError(
+                "{0} does not conform with required pattern {1}".format(data, pattern)
+            )
+
+    return __inner_

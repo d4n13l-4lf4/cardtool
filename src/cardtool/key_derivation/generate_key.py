@@ -4,34 +4,39 @@ from Crypto.Cipher import DES, DES3
 
 from cardtool.key_derivation.key_type import KeyType
 from cardtool.key_derivation.key_variant import KeyVariant
+from cardtool.util.common import get_as_hex_string
+from cardtool.util.definition import Endianness
 
 KeyMask = 0xC0C0C0C000000000C0C0C0C000000000
 KsnMask = 0xFFFFFFFFFFFFFFE00000
 
 
 def generate_key(
-    bdk: str, ksn: str, key_type: KeyType, endianness: sys.byteorder = "big"
+    bdk: str,
+    ksn: str,
+    key_type: KeyType,
+    endianness: sys.byteorder = Endianness.Big.value,
 ) -> str:
     ikey = create_ipek(bdk, ksn, endianness)
     session_key = __derive_key_(ikey, ksn, endianness)
 
     if key_type == KeyType.SESSION:
-        return __get_as_hex_string_(session_key)
+        return get_as_hex_string(session_key)
     if key_type == KeyType.IKEY:
-        return __get_as_hex_string_(ikey)
+        return get_as_hex_string(ikey)
     if key_type == KeyType.PIN:
-        return __get_as_hex_string_(session_key ^ KeyVariant.PinKey.value)
+        return get_as_hex_string(session_key ^ KeyVariant.PinKey.value)
     if key_type == KeyType.MAC:
-        return __get_as_hex_string_(session_key ^ KeyVariant.MacKey.value)
+        return get_as_hex_string(session_key ^ KeyVariant.MacKey.value)
     if key_type == KeyType.DATA:
         data_key = __get_data_key_(session_key ^ KeyVariant.DataKey.value, endianness)
-        return __get_as_hex_string_(data_key)
+        return get_as_hex_string(data_key)
 
     raise Exception("unknown key variant")
 
 
 def __get_data_key_(key: int, byteorder=sys.byteorder) -> int:
-    ede3_key = __get_ede3_key_(__get_as_hex_string_(key))
+    ede3_key = __get_ede3_key_(get_as_hex_string(key))
     top8 = (key & 0xFFFFFFFFFFFFFFFF0000000000000000) >> 64
     bottom8 = key & 0xFFFFFFFFFFFFFFFF
 
@@ -47,13 +52,13 @@ def __get_data_key_(key: int, byteorder=sys.byteorder) -> int:
     )
     first_half = (
         int.from_bytes(
-            first_enc.encrypt(bytes.fromhex(__get_as_hex_string_(top8))),
+            first_enc.encrypt(bytes.fromhex(get_as_hex_string(top8))),
             byteorder=byteorder,
         )
         << 64
     )
     second_half = int.from_bytes(
-        second_enc.encrypt(bytes.fromhex(__get_as_hex_string_(bottom8))),
+        second_enc.encrypt(bytes.fromhex(get_as_hex_string(bottom8))),
         byteorder=byteorder,
     )
 
@@ -84,12 +89,12 @@ def create_ipek(bdk: str, ksn: str, byteorder=sys.byteorder) -> int:
     ede3_bkd = __get_ede3_key_(bdk)
 
     masked_ksn = int.from_bytes(bytes.fromhex(ksn), byteorder) & KsnMask
-    ksn_top8 = __get_as_hex_string_(masked_ksn >> 16)
+    ksn_top8 = get_as_hex_string(masked_ksn >> 16)
     ksn_top8_bytes = bytes.fromhex(ksn_top8)
 
     first_key = bytes.fromhex(ede3_bkd)
     ede3_second_key = __get_ede3_key_(
-        __get_as_hex_string_(int.from_bytes(bytes.fromhex(bdk), byteorder) ^ KeyMask)
+        get_as_hex_string(int.from_bytes(bytes.fromhex(bdk), byteorder) ^ KeyMask)
     )
     second_key = bytes.fromhex(ede3_second_key)
 
@@ -117,17 +122,10 @@ def __encrypt_register_(key: int, ksn: int, byteorder=sys.byteorder):
     top8 = (key & 0xFFFFFFFFFFFFFFFF0000000000000000) >> 64
     enc_key = top8.to_bytes(8, byteorder, signed=False)
 
-    data_to_encrypt = bytes.fromhex(__get_as_hex_string_(bottom8 ^ ksn))
+    data_to_encrypt = bytes.fromhex(get_as_hex_string(bottom8 ^ ksn))
     encryptor = DES.new(enc_key, DES.MODE_CBC, IV=bytes.fromhex("0000000000000000"))
     encrypted_data = int.from_bytes(encryptor.encrypt(data_to_encrypt), byteorder)
     return bottom8 ^ encrypted_data
-
-
-def __get_as_hex_string_(number: int) -> str:
-    new_hex_number = hex(number).lstrip("0x")
-    if len(new_hex_number) % 2 != 0:
-        new_hex_number = "0" + new_hex_number
-    return new_hex_number.upper()
 
 
 def __get_ede3_key_(raw_bdk):

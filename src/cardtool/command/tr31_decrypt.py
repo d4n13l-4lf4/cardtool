@@ -1,9 +1,40 @@
+import sys
+
 import click
+from loguru import logger
+
+from cardtool.tr31.decrypt import TR31Decryption
+from cardtool.validation.command import InOrder, validate_string_callable
+from cardtool.validation.rules import Regex
 
 
-@click.command(name="decrypt-tr31")
-@click.option("--kbpk", "-kbpk", type=str, required=True)
-@click.option("--kcv", "-kcv", type=str, required=True)
-@click.argument("kblock")
-def decrypt_tr31(kbpk, kcv, kblock):
-    click.echo("Plaintext Key: 0123456789ABCDEFFEDCBA9876543210")
+def validate_kcv():
+    validate = InOrder(Regex("[A-F0-9]{6}"))
+    return validate_string_callable(validate)
+
+
+def validate_kbpk():
+    validate = InOrder(Regex("[A-F0-9]{32}"))
+    return validate_string_callable(validate)
+
+
+def validate_kblock():
+    validate = InOrder(Regex("[A-Z0-9]{72,80}"))
+    return validate_string_callable(validate)
+
+
+def decrypt_tr31(decrypt: TR31Decryption):
+    @click.command(name="decrypt-key")
+    @click.option("--kbpk", "-kbpk", type=str, required=True, callback=validate_kbpk())
+    @click.option("--kcv", "-kcv", type=str, required=True, callback=validate_kcv())
+    @click.argument("kblock", type=str, callback=validate_kblock())
+    def __inner_(kbpk: str, kcv: str, kblock: str):
+        try:
+            plaintext_key = decrypt.decrypt(kbpk, kcv, kblock)
+            click.echo(f"Plaintext Key: {plaintext_key}")
+        except Exception as e:
+            logger.error(e)
+            click.echo("Error: {0}".format(e))
+            sys.exit(1)
+
+    return __inner_

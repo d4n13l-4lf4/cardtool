@@ -16,10 +16,8 @@
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">
       <list>
-        <option value="$MODULE_DIR$/src/cardtool/config" />
         <option value="$MODULE_DIR$/src/cardtool/command" />
         <option value="$MODULE_DIR$/tests/cardtool/command" />
-        <option value="$MODULE_DIR$/tests/cardtool/config" />
         <option value="$MODULE_DIR$/tests/cardtool/key_derivation" />
         <option value="$MODULE_DIR$/tests/helper" />
         <option value="$MODULE_DIR$/tests/cardtool" />

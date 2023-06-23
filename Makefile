@@ -16,6 +16,8 @@ test-unit:
 	pytest
 
 coverage:
+	coverage erase
+	pytest --cov --cov-append --cov-report=term-missing
 	tox -e report
 	open htmlcov/index.html
 

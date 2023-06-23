@@ -1,8 +1,12 @@
 import pytest
 from hamcrest import assert_that, equal_to
-from helper.test_common import TR31_VERSION_A_KEY_BLOCK, TR31_VERSION_B_KEY_BLOCK
+from helper.common import (
+    PLAINTEXT_KEY_DATA,
+    TR31_VERSION_A_KEY_BLOCK,
+    TR31_VERSION_B_KEY_BLOCK,
+)
 
-from cardtool.tr31.key_block import KeyBlock, TR31Parser, TR31Version
+from cardtool.tr31.key_block import KeyBlock, KeyData, TR31Parser, TR31Version
 
 testdata = [
     (TR31Version.A, TR31_VERSION_A_KEY_BLOCK),
@@ -45,11 +49,21 @@ ids = ["Version A", "Version B"]
 
 class TestKeyBlock:
     @pytest.mark.parametrize("version,key_block", testdata, ids=ids)
-    def test_key_block_parse_should_parse_successfully(self, version, key_block):
+    def test_should_parse_key_block_successfully(self, version, key_block):
         parser = TR31Parser()
         parsed = parser.parse_key_block(key_block)
         expected_block = test_result.get(version)
         assert_that(parsed, equal_to(expected_block))
+
+    def test_should_parse_key_data_successfully(
+        self,
+    ):
+        parser = TR31Parser()
+        key_data = parser.parse_key_data(PLAINTEXT_KEY_DATA)
+        expected_key_data = KeyData(
+            128, "0080", "0123456789abcdeffedcba9876543210", "4296910ad287"
+        )
+        assert_that(key_data, equal_to(expected_key_data))
 
     def test_should_raise_not_implemented_error_when_it_receives_an_unknown_version(
         self,
