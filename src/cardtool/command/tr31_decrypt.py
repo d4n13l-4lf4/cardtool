@@ -25,8 +25,22 @@ def validate_kblock():
 
 def decrypt_tr31(decrypt: TR31Decryption):
     @click.command(name="decrypt-key")
-    @click.option("--kbpk", "-kbpk", type=str, required=True, callback=validate_kbpk())
-    @click.option("--kcv", "-kcv", type=str, required=True, callback=validate_kcv())
+    @click.option(
+        "--kbpk",
+        "-kbpk",
+        type=str,
+        required=True,
+        callback=validate_kbpk(),
+        help="Key block protection key",
+    )
+    @click.option(
+        "--kcv",
+        "-kcv",
+        type=str,
+        required=True,
+        callback=validate_kcv(),
+        help="Key check value",
+    )
     @click.argument("kblock", type=str, callback=validate_kblock())
     def __inner_(kbpk: str, kcv: str, kblock: str):
         try:
