@@ -1,12 +1,12 @@
 import pytest
 from hamcrest import assert_that, equal_to
+
+from cardtool.tr31.key_block import KeyBlock, KeyData, TR31Parser, TR31Version
 from helper.common import (
     PLAINTEXT_KEY_DATA,
     TR31_VERSION_A_KEY_BLOCK,
     TR31_VERSION_B_KEY_BLOCK,
 )
-
-from cardtool.tr31.key_block import KeyBlock, KeyData, TR31Parser, TR31Version
 
 testdata = [
     (TR31Version.A, TR31_VERSION_A_KEY_BLOCK),

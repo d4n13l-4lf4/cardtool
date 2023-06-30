@@ -3,6 +3,9 @@ from unittest.mock import MagicMock, Mock
 import pytest
 from click.testing import CliRunner
 from hamcrest import assert_that, contains_string, equal_to
+
+from cardtool.command.tr31_decrypt import decrypt_tr31
+from cardtool.tr31.decrypt import TR31Decryption
 from helper.common import (
     FAILURE_EXIT_CODE,
     KCV,
@@ -13,9 +16,6 @@ from helper.common import (
     TR31_VERSION_A_KEY_BLOCK,
     TR31_VERSION_B_KEY_BLOCK,
 )
-
-from cardtool.command.tr31_decrypt import decrypt_tr31
-from cardtool.tr31.decrypt import TR31Decryption
 
 testdata = [
     (

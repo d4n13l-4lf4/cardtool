@@ -46,3 +46,7 @@ norecursedirs = "tests/helper"
 addopts = [
     "--import-mode=importlib"
 ]
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]

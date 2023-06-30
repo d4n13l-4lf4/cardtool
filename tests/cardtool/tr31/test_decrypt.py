@@ -2,14 +2,14 @@ from unittest.mock import Mock
 
 import pytest
 from hamcrest import assert_that, equal_to
+
+import cardtool.tr31.decrypt as tr31
+from cardtool.tr31.key_block import KeyBlock, TR31Parse, TR31Version
 from helper.common import (
     PLAINTEXT_KEY,
     TR31_VERSION_A_KEY_BLOCK,
     TR31_VERSION_B_KEY_BLOCK,
 )
-
-import cardtool.tr31.decrypt as tr31
-from cardtool.tr31.key_block import KeyBlock, TR31Parse, TR31Version
 
 testdata = [
     (

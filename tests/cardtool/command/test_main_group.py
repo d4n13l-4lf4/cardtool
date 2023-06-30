@@ -6,9 +6,9 @@ from hamcrest import (
     not_,
     string_contains_in_order,
 )
-from helper.common import SUCCESS_EXIT_CODE
 
 from cardtool.command.main_group import WELCOME_MESSAGE, cli_card
+from helper.common import SUCCESS_EXIT_CODE
 
 
 class TestMainGroup:

@@ -1,8 +1,8 @@
 import pytest
 from hamcrest import assert_that, equal_to
-from helper.common import PLAINTEXT_KEY
 
 from cardtool.util.common import get_as_hex_string, get_cmac, hex_xor
+from helper.common import PLAINTEXT_KEY
 
 
 @pytest.mark.parametrize(
