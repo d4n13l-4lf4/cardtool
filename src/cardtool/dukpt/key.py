@@ -2,8 +2,8 @@ import sys
 
 from Crypto.Cipher import DES, DES3
 
-from cardtool.key_derivation.key_type import KeyType
-from cardtool.key_derivation.key_variant import KeyVariant
+from cardtool.dukpt.key_type import KeyType
+from cardtool.dukpt.key_variant import KeyVariant
 from cardtool.util.common import get_as_hex_string
 from cardtool.util.model import Endianness
 

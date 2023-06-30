@@ -3,8 +3,8 @@ from collections import namedtuple
 import pytest
 from hamcrest import assert_that, equal_to
 
-from cardtool.key_derivation.key import generate_key
-from cardtool.key_derivation.key_type import KeyType
+from cardtool.dukpt.key import generate_key
+from cardtool.dukpt.key_type import KeyType
 
 KeyTuple = namedtuple("KeyTuple", "Data Mac Pin Session Ikey")
 

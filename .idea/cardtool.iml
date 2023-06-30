@@ -18,11 +18,11 @@
       <list>
         <option value="$MODULE_DIR$/src/cardtool/command" />
         <option value="$MODULE_DIR$/tests/cardtool/command" />
-        <option value="$MODULE_DIR$/tests/cardtool/key_derivation" />
+        <option value="$MODULE_DIR$/tests/cardtool/dukpt" />
         <option value="$MODULE_DIR$/tests/helper" />
         <option value="$MODULE_DIR$/tests/cardtool" />
         <option value="$MODULE_DIR$/src/cardtool" />
-        <option value="$MODULE_DIR$/src/cardtool/key_derivation" />
+        <option value="$MODULE_DIR$/src/cardtool/dukpt" />
       </list>
     </option>
   </component>

@@ -105,9 +105,9 @@ class TestGenerator:
             ),
         ],
         ids=[
-            "with MC Mexican info",
-            "with Visa and unknown currency and country values",
-            "with carnet brand",
+            "with MC card brand",
+            "with Visa and unknown currency/country values",
+            "with Carnet brand",
         ],
     )
     def test_generate_data_successfully_when_called_(
