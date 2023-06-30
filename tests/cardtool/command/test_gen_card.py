@@ -9,7 +9,9 @@ from hamcrest import assert_that, equal_to
 from cardtool.command.gen_card import gen_card
 
 
-@pytest.mark.parametrize("config_file,expected_file", [("config.yaml", "cards.json")])
+@pytest.mark.parametrize(
+    "config_file,expected_file", [("card-config.yaml", "cards.json")]
+)
 def test_gen_json_card(
     config_file, expected_file, tmp_path, data_resolver: Callable[[str], str]
 ):

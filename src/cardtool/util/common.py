@@ -1,7 +1,7 @@
 from Crypto.Cipher import DES3
 from Crypto.Hash import CMAC
 
-from cardtool.util.definition import Endianness
+from cardtool.util.model import Endianness
 
 
 def get_as_hex_string(number: int) -> str:

@@ -3,7 +3,7 @@ from contextlib import nullcontext as does_not_raise
 import pytest
 from hamcrest import assert_that, equal_to
 
-from cardtool.validation.rules import Length, LengthBetween, Regex
+from cardtool.validation.rules import length, length_between, regex
 
 
 @pytest.mark.parametrize(
@@ -22,7 +22,7 @@ from cardtool.validation.rules import Length, LengthBetween, Regex
 )
 def test_should_validate_expected_length_when_called(input, rule, expectation):
     with expectation:
-        validate = Length(rule)
+        validate = length(rule)
         validate(input)
 
 
@@ -50,7 +50,7 @@ def test_should_validate_length_between_expected_range_when_called(
 ):
     with expectation as e:
         (min, max) = rule
-        validate = LengthBetween(min, max)
+        validate = length_between(min, max)
         validate(input)
     if e is not None:
         assert_that(e.value.args[0], equal_to(msg))
@@ -68,7 +68,7 @@ def test_should_validate_str_conforms_to_expected_regex_when_called(
     input, rule, expectation
 ):
     with expectation as e:
-        validate = Regex(rule, flags=0)
+        validate = regex(rule, flags=0)
         validate(input)
     if e is not None:
         assert_that(

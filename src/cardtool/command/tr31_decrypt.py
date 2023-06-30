@@ -4,22 +4,22 @@ import click
 from loguru import logger
 
 from cardtool.tr31.decrypt import TR31Decryption
-from cardtool.validation.command import InOrder, validate_string_callable
-from cardtool.validation.rules import Regex
+from cardtool.validation.command import apply_in_order, validate_string_callable
+from cardtool.validation.rules import regex
 
 
 def validate_kcv():
-    validate = InOrder(Regex("[A-F0-9]{6}"))
+    validate = apply_in_order(regex("[A-F0-9]{6}"))
     return validate_string_callable(validate)
 
 
 def validate_kbpk():
-    validate = InOrder(Regex("[A-F0-9]{32}"))
+    validate = apply_in_order(regex("[A-F0-9]{32}"))
     return validate_string_callable(validate)
 
 
 def validate_kblock():
-    validate = InOrder(Regex("[A-Z0-9]{72,80}"))
+    validate = apply_in_order(regex("[A-Z0-9]{72,80}"))
     return validate_string_callable(validate)
 
 

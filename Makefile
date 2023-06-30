@@ -5,7 +5,8 @@ freeze:
 	pip freeze > ./requirements.txt
 
 lint:
-	isort ./src ./tests
+	autoflake -i -r src/ tests/
+	isort src/ tests/
 	black src/ tests/
 	flake8 src/ tests/
 

@@ -1,7 +1,7 @@
 import re
 
 
-def LengthBetween(min: int, max: int):
+def length_between(min: int, max: int):
     def __inner_(data: str):
         len_data = len(data)
         if len_data < min or len_data > max:
@@ -12,7 +12,7 @@ def LengthBetween(min: int, max: int):
     return __inner_
 
 
-def Length(total: int):
+def length(total: int):
     def __inner_(data: str):
         len_data = len(data)
         if len_data != total:
@@ -23,7 +23,7 @@ def Length(total: int):
     return __inner_
 
 
-def Regex(pattern: str, flags: re.RegexFlag = 0):
+def regex(pattern: str, flags: re.RegexFlag = 0):
     rex = re.compile(pattern)
 
     def __inner_(data: str):

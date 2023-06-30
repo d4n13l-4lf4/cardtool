@@ -19,7 +19,7 @@ def validate_string_callable(validate: Callable[[str], None]):
     return wrapper
 
 
-def InOrder(*validator: Callable[[str], None]):
+def apply_in_order(*validator: Callable[[str], None]):
     def __inner_(data: str):
         for validate in validator:
             validate(data)

@@ -5,7 +5,7 @@ from Crypto.Cipher import DES, DES3
 from cardtool.key_derivation.key_type import KeyType
 from cardtool.key_derivation.key_variant import KeyVariant
 from cardtool.util.common import get_as_hex_string
-from cardtool.util.definition import Endianness
+from cardtool.util.model import Endianness
 
 KeyMask = 0xC0C0C0C000000000C0C0C0C000000000
 KsnMask = 0xFFFFFFFFFFFFFFE00000

@@ -5,7 +5,7 @@ import click
 import pytest
 from hamcrest import assert_that, equal_to
 
-from cardtool.validation.command import InOrder, validate_string_callable
+from cardtool.validation.command import apply_in_order, validate_string_callable
 
 
 @pytest.mark.parametrize(
@@ -22,7 +22,7 @@ def test_should_trigger_a_chain_of_validators_when_called(
     with expectation:
         first_validator = Mock()
         second_validator = Mock(side_effect=exception)
-        validate = InOrder(first_validator, second_validator)
+        validate = apply_in_order(first_validator, second_validator)
         validate(input)
 
     first_validator.assert_called_with(input)
