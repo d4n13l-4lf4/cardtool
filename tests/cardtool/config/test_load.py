@@ -7,7 +7,7 @@ import pytest
 import yaml
 from hamcrest import assert_that, equal_to
 
-from cardtool.config.load import safe_load
+from cardtool.config.load import get_abs_path, safe_load
 
 
 @dataclass
@@ -91,3 +91,13 @@ def test_should_load_a_yaml_file_(
         ]
         root_open.assert_has_calls(calls)
         assert_that(object_data, equal_to(expected))
+
+
+@patch("cardtool.config.load.abspath")
+def test_get_abs_path(abspath_patch):
+    path = "test.yaml"
+    test_dir = "test/"
+    abspath_patch.side_effect = [test_dir]
+    abs_path = get_abs_path(path)
+    expected_path = "test/test.yaml"
+    assert_that(abs_path, equal_to(expected_path))

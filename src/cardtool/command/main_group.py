@@ -1,6 +1,7 @@
 import click
 
-from cardtool.command.gen_card import gen_card
+from cardtool.card.bootstrap import bootstrap
+from cardtool.command.gen_card import init_gen_card
 from cardtool.command.tr31_decrypt import decrypt_tr31
 from cardtool.log.logger import configure_logger
 from cardtool.tr31 import decrypt
@@ -20,5 +21,6 @@ def cli_card(ctx):
         pass
 
 
-cli_card.add_command(gen_card)
+cli_card.add_command(init_gen_card(bootstrap))
+# TODO: change this to use a factory.
 cli_card.add_command(decrypt_tr31(decrypt.new()))

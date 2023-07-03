@@ -6,10 +6,10 @@ from loguru import logger
 
 
 @pytest.fixture
-def data_resolver() -> Callable[[], str]:
-    def inner(file: str):
+def data_resolver() -> Callable[[str, str], str]:
+    def inner(dir: str, file: str):
         current_dir = os.path.dirname(__file__)
-        config_path = os.path.join(current_dir, "data", file)
+        config_path = os.path.join(current_dir, dir, file)
         return config_path
 
     return inner

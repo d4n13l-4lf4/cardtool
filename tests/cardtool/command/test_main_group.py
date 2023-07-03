@@ -20,7 +20,7 @@ class TestMainGroup:
 
     def test_should_not_show_a_welcome_message_when_a_command_is_supplied(self):
         runner = CliRunner()
-        result = runner.invoke(cli_card, ["gencard", "--help"])
+        result = runner.invoke(cli_card, ["gen-card", "--help"])
         assert_that(result.output, not_(contains_string(WELCOME_MESSAGE)))
         assert_that(result.exit_code, equal_to(SUCCESS_EXIT_CODE))
 
@@ -28,6 +28,6 @@ class TestMainGroup:
         runner = CliRunner()
         result = runner.invoke(cli_card, ["--help"])
 
-        commands = ["decrypt-key", "gencard"]
+        commands = ["decrypt-key", "gen-card"]
         assert_that(result.exit_code, equal_to(SUCCESS_EXIT_CODE))
         assert_that(result.output, string_contains_in_order(*commands))

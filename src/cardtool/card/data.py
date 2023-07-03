@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import Callable, List, Tuple
 
 import pydash.objects
@@ -11,7 +12,15 @@ from cardtool.util.common import get_as_hex_string
 TlvData = Tuple[int, bytes]
 
 
-class Generator:
+class Generator(ABC):
+    @abstractmethod
+    def generate_data(
+        self, terminal: Terminal, transaction: Transaction, card: Card
+    ) -> CardReadingData:  # pragma: nocover
+        pass
+
+
+class CardGen(Generator):
     def __init__(self, pin_generator: Callable[[str, str], str]):
         self.__pin_generator_ = pin_generator
 

@@ -36,7 +36,7 @@ class DUKPTCipher(Cipher):
         data_to_encrypt = (
             raw_data
             if (len(raw_data) % 8 == 0)
-            else self.__append_bytes_(raw_data, 8 - (len(raw_data) % 8))
+            else DUKPTCipher.__append_bytes_(raw_data, 8 - (len(raw_data) % 8))
         )
 
         encrypted = encrypt.encrypt(data_to_encrypt)
@@ -54,7 +54,8 @@ class DUKPTCipher(Cipher):
 
         return encrypted.hex().upper()
 
-    def __append_bytes_(self, data: bytes, n: int) -> bytes:
+    @staticmethod
+    def __append_bytes_(data: bytes, n: int) -> bytes:
         bt = bytearray(data)
         [bt.append(0x00) for _ in range(n)]
         return bytes(bt)

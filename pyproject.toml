@@ -22,7 +22,10 @@ dependencies = [
     "loguru==0.7.0",
     "jsonschema==4.17.3",
     "pydash==7.0.4",
-    "ber-tlv==0.0.6"
+    "ber-tlv==0.0.6",
+    "simplejson==3.19.1",
+    "dill==0.3.6",
+    "toolz==0.12.0"
 ]
 dynamic = ["version"]
 

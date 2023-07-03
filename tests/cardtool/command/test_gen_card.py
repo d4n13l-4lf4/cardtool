@@ -1,42 +1,42 @@
-import json
-import os
-from typing import Any, Callable, Dict
+import os.path
+from unittest.mock import MagicMock, Mock
 
 import pytest
 from click.testing import CliRunner
 from hamcrest import assert_that, equal_to
 
-from cardtool.command.gen_card import gen_card
+from cardtool.card.dump import Dumper
+from cardtool.card.model import CardConfig
+from cardtool.command.gen_card import init_gen_card
 
 
 @pytest.mark.parametrize(
-    "config_file,expected_file", [("card-config.yaml", "cards.json")]
+    "config_file,format", [("card-config.yaml", "json"), ("card-config.yaml", "yaml")]
 )
-def test_gen_json_card(
-    config_file, expected_file, tmp_path, data_resolver: Callable[[str], str]
-):
+def test_gen_card(config_file, format, data_resolver, tmp_path):
     runner = CliRunner()
-    with runner.isolated_filesystem(temp_dir=tmp_path):
-        config_file_fullpath = data_resolver(config_file)
-        expected_file_fullpath = data_resolver(expected_file)
-        outfile_fullpath = os.path.join(tmp_path, expected_file)
+
+    with runner.isolated_filesystem(temp_dir=tmp_path) as td:
+        bootstrap = MagicMock()
+        dumper = Mock(spec=Dumper)
+        card_cfg = CardConfig()
+        bootstrap.side_effect = [(card_cfg, dumper)]
+
+        cmd = init_gen_card(bootstrap)
+        cfg_file = data_resolver("data", config_file)
+        out_file = os.path.join(td, "test-gen.{0}".format(format))
         result = runner.invoke(
-            gen_card,
+            cmd,
             [
-                "--config",
-                config_file_fullpath,
-                "--format",
-                "json",
-                "--name",
-                outfile_fullpath,
+                "-cfg",
+                cfg_file,
+                "-fmt",
+                format,
+                out_file,
             ],
         )
-        cards = load_json_dict(outfile_fullpath)
-        expected_cards = load_json_dict(expected_file_fullpath)
+
+        bootstrap.assert_called_once_with(cfg_file, format)
+        dumper.dump_cards.assert_called_once_with(out_file, card_cfg)
+        assert_that(result.output, equal_to("Done!\n"))
         assert_that(result.exit_code, equal_to(0))
-        assert_that(cards, equal_to(expected_cards))
-
-
-def load_json_dict(file: str) -> Dict[str, Any]:
-    with open(file, mode="r", encoding="utf-8") as f:
-        return json.load(f)

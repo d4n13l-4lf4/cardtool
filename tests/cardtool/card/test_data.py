@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 from hamcrest import assert_that, equal_to
 
-from cardtool.card.data import Generator
+from cardtool.card.data import CardGen
 from cardtool.card.model import Brand, Card, CardReadingData, Terminal, Transaction
 
 TLV_DATA = {
@@ -119,7 +119,7 @@ class TestGenerator:
     ):
         pin_gen = Mock()
         pin_gen.return_value = PIN_BLOCK
-        gen = Generator(pin_gen)
+        gen = CardGen(pin_gen)
         card_reading_data = gen.generate_data(terminal, transaction, card)
         assert_that(card_reading_data, equal_to(expected_data))
         pin_gen.assert_called_once_with(card.pan, card.pin)
