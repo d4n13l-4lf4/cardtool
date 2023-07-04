@@ -1,6 +1,9 @@
+import os
+from multiprocessing import Pool
 from typing import Callable, Tuple
 
 import click
+import dill as pickle  # NOQA
 
 from cardtool.card.dump import Dumper
 from cardtool.card.model import CardConfig
@@ -28,8 +31,9 @@ def init_gen_card(bootstrap: Callable[[str, str], Tuple[CardConfig, Dumper]]):
         ),
     )
     def __inner_(config: str, format: str, out_file: str):
-        (cfg, dumper) = bootstrap(config, format)
-        dumper.dump_cards(out_file, cfg, map)
-        click.echo("Done!")
+        with Pool(os.cpu_count()) as p:
+            (cfg, dumper) = bootstrap(config, format)
+            dumper.dump_cards(out_file, cfg, p.imap)
+            click.echo("Done!")
 
     return __inner_

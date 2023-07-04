@@ -1,5 +1,5 @@
 import os.path
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 from click.testing import CliRunner
@@ -13,7 +13,8 @@ from cardtool.command.gen_card import init_gen_card
 @pytest.mark.parametrize(
     "config_file,format", [("card-config.yaml", "json"), ("card-config.yaml", "yaml")]
 )
-def test_gen_card(config_file, format, data_resolver, tmp_path):
+@patch("cardtool.command.gen_card.Pool", new_callable=MagicMock())
+def test_gen_card(_, config_file, format, data_resolver, tmp_path):
     runner = CliRunner()
 
     with runner.isolated_filesystem(temp_dir=tmp_path) as td:
@@ -21,6 +22,7 @@ def test_gen_card(config_file, format, data_resolver, tmp_path):
         dumper = Mock(spec=Dumper)
         card_cfg = CardConfig()
         bootstrap.side_effect = [(card_cfg, dumper)]
+        Mock()
 
         cmd = init_gen_card(bootstrap)
         cfg_file = data_resolver("data", config_file)

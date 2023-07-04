@@ -2,7 +2,6 @@ import functools
 from abc import ABC, abstractmethod
 from typing import Callable, Iterable, TypeVar
 
-import dill as pickle  # NOQA
 from toolz import compose
 
 from cardtool.card.data import Generator as Gen
