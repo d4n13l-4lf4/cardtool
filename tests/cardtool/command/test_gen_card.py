@@ -22,7 +22,6 @@ def test_gen_card(_, config_file, format, data_resolver, tmp_path):
         dumper = Mock(spec=Dumper)
         card_cfg = CardConfig()
         bootstrap.side_effect = [(card_cfg, dumper)]
-        Mock()
 
         cmd = init_gen_card(bootstrap)
         cfg_file = data_resolver("data", config_file)
