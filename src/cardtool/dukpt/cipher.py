@@ -31,7 +31,6 @@ class DUKPTCipher(Cipher):
         encrypt = DES3.new(
             bytes.fromhex(key), DES3.MODE_CBC, IV=bytes.fromhex("0" * 16)
         )
-
         raw_data = bytes.fromhex(data)
         data_to_encrypt = (
             raw_data

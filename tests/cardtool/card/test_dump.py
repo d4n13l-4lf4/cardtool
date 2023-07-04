@@ -59,11 +59,7 @@ class TestDump:
             generator.generate_data.side_effect = gen_cards
             cipher.encrypt.return_value = "encrypt"
             gen_calls = [
-                call(
-                    card,
-                    terminal=card_config.terminal,
-                    transaction=card_config.transaction,
-                )
+                call(card_config.terminal, card_config.transaction, card)
                 for card in card_config.cards
             ]
 
@@ -80,7 +76,7 @@ class TestDump:
             dm = CardDumper(cipher=cipher, serializer=serializer, generator=generator)
             dm.dump_cards(file, card_config)
             generator.generate_data.assert_called()
-            generator.generate_data.assert_has_calls(list(gen_calls), any_order=True)
+            generator.generate_data.assert_has_calls(gen_calls, any_order=True)
             cipher.encrypt.assert_has_calls(cipher_calls)
             (mapper, stream) = serializer.serialize.call_args[0]
             m.assert_called_once_with(file, mode="w", encoding="utf-8")

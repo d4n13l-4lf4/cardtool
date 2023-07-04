@@ -123,7 +123,7 @@ class CardGen(Generator):
         track1_data = "B{0}^{1}^{2}{3}123400001230  ".format(
             card.pan, cardholder_name, expiry_date, card.service_code
         )
-        return track1_data
+        return bytes(track1_data, "ascii").hex()
 
     def __generate_track2(self, card: Card) -> str:
         expiry_date = "{0}{1}".format(card.expiry_year, card.expiry_month)

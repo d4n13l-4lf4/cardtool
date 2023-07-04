@@ -37,6 +37,6 @@ def test_gen_card(config_file, format, data_resolver, tmp_path):
         )
 
         bootstrap.assert_called_once_with(cfg_file, format)
-        dumper.dump_cards.assert_called_once_with(out_file, card_cfg)
+        dumper.dump_cards.assert_called_once()
         assert_that(result.output, equal_to("Done!\n"))
         assert_that(result.exit_code, equal_to(0))

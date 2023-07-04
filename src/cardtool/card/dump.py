@@ -14,11 +14,14 @@ from cardtool.util.serialize import Serializer
 T = TypeVar("T")
 S = TypeVar("S")
 C = Callable[[T], S]
+Mapper = Callable[[C, Iterable[T]], Iterable[S]]
 
 
 class Dumper(ABC):
     @abstractmethod
-    def dump_cards(self, out_filepath: str, card_config: CardConfig):  # pragma: nocover
+    def dump_cards(
+        self, out_filepath: str, card_config: CardConfig, mapper: Mapper
+    ):  # pragma: nocover
         pass
 
 
@@ -28,27 +31,27 @@ class CardDumper(Dumper):
         cipher: Cipher,
         generator: Gen,
         serializer: Serializer,
-        mapper: Callable[[C, Iterable[T]], Iterable[S]] = map,
     ):
         self.__cipher_ = cipher
         self.__generator_ = generator
         self.__serializer_ = serializer
-        self.__mapper_ = mapper
 
-    def dump_cards(self, out_filepath: str, card_config: CardConfig):
+    def dump_cards(
+        self, out_filepath: str, card_config: CardConfig, mapper: Mapper = map
+    ):
         cards = card_config.cards
         generate_data = functools.partial(
             self.__generator_.generate_data,
-            terminal=card_config.terminal,
-            transaction=card_config.transaction,
+            card_config.terminal,
+            card_config.transaction,
         )
-        encrypt_data = self.__encrypt_card_
+        encrypt_data = self.encrypt_card
         pipeline = compose(encrypt_data, generate_data)
         with open(out_filepath, mode="w", encoding="utf-8") as out_file:
-            cards_dump = self.__mapper_(pipeline, cards)
+            cards_dump = mapper(pipeline, cards)
             self.__serializer_.serialize(cards_dump, out_file)
 
-    def __encrypt_card_(self, card: CardReadingData) -> CardReadingData:
+    def encrypt_card(self, card: CardReadingData) -> CardReadingData:
         enc_tlv = self.__cipher_.encrypt(card.tlv, KeyType.DATA)
         enc_track1 = self.__cipher_.encrypt(card.track1, KeyType.DATA)
         enc_track2 = self.__cipher_.encrypt(card.track2, KeyType.DATA)

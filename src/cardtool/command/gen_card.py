@@ -29,7 +29,7 @@ def init_gen_card(bootstrap: Callable[[str, str], Tuple[CardConfig, Dumper]]):
     )
     def __inner_(config: str, format: str, out_file: str):
         (cfg, dumper) = bootstrap(config, format)
-        dumper.dump_cards(out_file, cfg)
+        dumper.dump_cards(out_file, cfg, map)
         click.echo("Done!")
 
     return __inner_
