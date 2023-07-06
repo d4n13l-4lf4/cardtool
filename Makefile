@@ -5,22 +5,28 @@ freeze:
 	pip freeze > ./requirements.txt
 
 lint:
-	isort ./src ./test
-	black src/
-	flake8 src/
+	autoflake -i -r src/ tests/
+	isort src/ tests/
+	black src/ tests/
+	flake8 src/ tests/
 
 test-cov:
-	coverage erase && pytest --cov --cov-append --cov-report=term-missing
+	pytest --cov --cov-append --cov-report=term-missing
 
 test-unit:
 	pytest
 
 coverage:
+	coverage erase
+	pytest --cov --cov-append --cov-report=term-missing
 	tox -e report
 	open htmlcov/index.html
 
+pre-commit-install:
+	pre-commit install
+
 validate:
-	make lint && make test-cov
+	tox
 
 submit-coverage:
 	curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --keyring trustedkeys.gpg --import
