@@ -32,7 +32,7 @@ class CardGen(Generator):
         track1 = self.__generate_track1(card)
         track2 = self.__generate_track2(card)
 
-        return CardReadingData(tlv, track1, track2, pin_block)
+        return CardReadingData(tlv, track1, track2, pin_block, card.label)
 
     def __generate_tlv_(
         self, terminal: Terminal, transaction: Transaction, card: Card
@@ -44,6 +44,9 @@ class CardGen(Generator):
         )
         tx_type = self.__get_transaction_type_(transaction.type)
         aid = CardGen.__get_aid_(card.brand)
+        tx_counter = get_as_hex_string(
+            1 if transaction.counter == 0 else transaction.counter
+        ).rjust(4, "0")
 
         card_tlv.append((TlvTag.AMOUNT.value, bytes.fromhex(amount)))
         card_tlv.append((TlvTag.AMOUNT_OTHER.value, bytes.fromhex(other_amount)))
@@ -56,7 +59,7 @@ class CardGen(Generator):
         card_tlv.append((TlvTag.AIP.value, bytes.fromhex("3900")))
         card_tlv.append((TlvTag.AID.value, bytes.fromhex(aid)))
         card_tlv.append(
-            (TlvTag.ATC.value, bytes.fromhex(get_as_hex_string(transaction.counter)))
+            (TlvTag.ATC.value, bytes.fromhex(tx_counter[len(tx_counter) - 4 :]))
         )
         card_tlv.append((TlvTag.APP_CRYPTO.value, bytes.fromhex("67867D992FEC13D4")))
         card_tlv.append((TlvTag.TX_DATE.value, bytes.fromhex(transaction.date)))

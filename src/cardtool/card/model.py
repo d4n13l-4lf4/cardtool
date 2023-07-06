@@ -16,6 +16,7 @@ class CardReadingData(yaml.YAMLObject):
     track1: str = ""
     track2: str = ""
     pin_block: str = ""
+    label: str = ""
 
 
 @dataclass(frozen=True)

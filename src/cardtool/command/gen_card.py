@@ -28,7 +28,7 @@ def init_gen_card(bootstrap: Callable[[CardConfig, str], Dumper]):
         callback=validate_file(),
     )
     @click.option(
-        "--format",
+        "--fmt",
         "-fmt",
         type=click.Choice(
             [Serialize.JSON.value, Serialize.YAML.value], case_sensitive=True
@@ -45,9 +45,9 @@ def init_gen_card(bootstrap: Callable[[CardConfig, str], Dumper]):
             exists=False,
         ),
     )
-    def __inner_(config: CardConfig, format: str, out_file: str):
+    def __inner_(config: CardConfig, fmt: str, out_file: str):
         with Pool(os.cpu_count()) as p:
-            dumper = bootstrap(config, format)
+            dumper = bootstrap(config, fmt)
             dumper.dump_cards(out_file, config, p.imap)
             click.echo("Done!")
 

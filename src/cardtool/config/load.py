@@ -2,7 +2,7 @@ import json
 from dataclasses import asdict, is_dataclass
 from functools import partial
 from os.path import abspath, dirname, join
-from typing import TypeVar
+from typing import Generic, TypeVar
 
 import jsonschema.exceptions
 import yaml
@@ -11,7 +11,7 @@ from jsonschema import validate
 T = TypeVar("T")
 
 
-def safe_load(file: str, schema: str) -> T:
+def safe_load(file: str, schema: str) -> Generic[T]:
     open_file = partial(open, mode="r", encoding="utf-8")
     with open_file(file) as data_file, open_file(schema) as schema_file:
         try:

@@ -1,5 +1,6 @@
 from contextlib import nullcontext as does_not_raise
 from io import StringIO
+from typing import Type
 
 import pytest
 from hamcrest import assert_that, equal_to, instance_of
@@ -8,7 +9,6 @@ from cardtool.card.model import CardReadingData
 from cardtool.util.serialize import (
     CustomJSONSerializer,
     JSONSerializer,
-    S,
     Serializer,
     YAMLSerializer,
     new_serializer,
@@ -24,7 +24,7 @@ from cardtool.util.serialize import (
     ],
 )
 def test_new_serializer_should_a_custom_serializer_when_called(
-    serializer: str, tp: S, expectation
+    serializer: str, tp: Type, expectation
 ):
     with expectation:
         serialize = new_serializer(serializer)
@@ -44,7 +44,7 @@ def test_new_serializer_should_a_custom_serializer_when_called(
         ),
         (
             CardReadingData(),
-            {"tlv": "", "track1": "", "track2": "", "pin_block": ""},
+            {"tlv": "", "track1": "", "track2": "", "pin_block": "", "label": ""},
             does_not_raise(),
         ),
     ],
@@ -53,7 +53,7 @@ def test_new_serializer_should_a_custom_serializer_when_called(
         "serialize a dataclass turning it into a dict",
     ],
 )
-def test_custom_JSON_serializer_should_(data, expected, expectation):
+def test_custom_json_serializer_should_(data, expected, expectation):
     with expectation:
         custom_ser = CustomJSONSerializer()
         out = custom_ser.default(data)
@@ -66,7 +66,7 @@ def test_custom_JSON_serializer_should_(data, expected, expectation):
         ((1, 2), """[1, 2]"""),
         (
             (CardReadingData() for i in range(2)),
-            """[{"tlv": "", "track1": "", "track2": "", "pin_block": ""}, {"tlv": "", "track1": "", "track2": "", "pin_block": ""}]""",  # noqa: E501
+            """[{"tlv": "", "track1": "", "track2": "", "pin_block": "", "label": ""}, {"tlv": "", "track1": "", "track2": "", "pin_block": "", "label": ""}]""",  # noqa: E501
         ),
     ],
 )

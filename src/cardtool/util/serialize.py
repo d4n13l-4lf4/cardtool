@@ -3,14 +3,14 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import asdict, is_dataclass
 from enum import Enum
-from typing import IO, Any, Iterable, Sequence, TypeVar
+from typing import IO, Any, Generic, Iterable, Sequence, TypeVar
 
 import simplejson as json
 import yaml
 
 
 class Serializer(ABC):
-    def serialize(self, iter: Iterable[Any], stream: IO):  # pragma: nocover
+    def serialize(self, it: Iterable[Any], stream: IO):  # pragma: nocover
         pass
 
 
@@ -22,7 +22,7 @@ class Serialize(Enum):
     YAML = "yaml"
 
 
-def new_serializer(serializer: str) -> S:
+def new_serializer(serializer: str) -> Generic[S]:
     if serializer == Serialize.YAML.value:
         return YAMLSerializer()
 
@@ -40,18 +40,18 @@ class CustomJSONSerializer(json.JSONEncoder):
 
 
 class JSONSerializer(Serializer):
-    def serialize(self, iter: Iterable[Any], stream: IO):
-        json.dump(iter, stream, iterable_as_array=True, cls=CustomJSONSerializer)
+    def serialize(self, it: Iterable[Any], stream: IO):
+        json.dump(it, stream, iterable_as_array=True, cls=CustomJSONSerializer)
 
     def __call__(self, *args, **kwargs):
         (data, stream, *_) = args
-        return self.serialize(iter=data, stream=stream)
+        return self.serialize(it=data, stream=stream)
 
 
 class YAMLSerializer(Serializer):
-    def serialize(self, iter: Sequence[Any], stream: IO):
-        yaml.dump_all(iter, stream)
+    def serialize(self, it: Sequence[Any], stream: IO):
+        yaml.dump_all(it, stream)
 
     def __call__(self, *args, **kwargs):
         (data, stream, *_) = args
-        return self.serialize(iter=data, stream=stream)
+        return self.serialize(it=data, stream=stream)
