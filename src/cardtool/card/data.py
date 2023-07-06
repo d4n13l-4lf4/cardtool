@@ -43,7 +43,7 @@ class CardGen(Generator):
             12, "0"
         )
         tx_type = self.__get_transaction_type_(transaction.type)
-        aid = self.__get_aid_(card.brand)
+        aid = CardGen.__get_aid_(card.brand)
 
         card_tlv.append((TlvTag.AMOUNT.value, bytes.fromhex(amount)))
         card_tlv.append((TlvTag.AMOUNT_OTHER.value, bytes.fromhex(other_amount)))
@@ -54,9 +54,7 @@ class CardGen(Generator):
             (TlvTag.IAD.value, bytes.fromhex("0310A04001240000000000000000000000FF"))
         )
         card_tlv.append((TlvTag.AIP.value, bytes.fromhex("3900")))
-        card_tlv.append(
-            (TlvTag.AID.value, bytes.fromhex(aid))
-        )  # TODO: change according to brand
+        card_tlv.append((TlvTag.AID.value, bytes.fromhex(aid)))
         card_tlv.append(
             (TlvTag.ATC.value, bytes.fromhex(get_as_hex_string(transaction.counter)))
         )
@@ -98,7 +96,8 @@ class CardGen(Generator):
 
         return tlv_bytes.hex().upper()
 
-    def __get_aid_(self, brand: str) -> str:
+    @staticmethod
+    def __get_aid_(brand: str) -> str:
         aid = {
             "Mastercard": "A0000000041010",
             "Visa": "A0000000031010",
@@ -107,7 +106,8 @@ class CardGen(Generator):
 
         return pydash.objects.get(aid, brand, "A0000000041010")
 
-    def __get_transaction_type_(self, tx_type: str) -> str:
+    @staticmethod
+    def __get_transaction_type_(tx_type: str) -> str:
         processing_codes = {
             "charge": "00",
             "balance": "31",
@@ -117,7 +117,8 @@ class CardGen(Generator):
         }
         return pydash.objects.get(processing_codes, tx_type, "00")
 
-    def __generate_track1(self, card: Card) -> str:
+    @staticmethod
+    def __generate_track1(card: Card) -> str:
         expiry_date = "{0}{1}".format(card.expiry_year, card.expiry_month)
         cardholder_name = card.cardholder_name.ljust(26, " ")
         track1_data = "B{0}^{1}^{2}{3}123400001230  ".format(
@@ -125,7 +126,8 @@ class CardGen(Generator):
         )
         return bytes(track1_data, "ascii").hex()
 
-    def __generate_track2(self, card: Card) -> str:
+    @staticmethod
+    def __generate_track2(card: Card) -> str:
         expiry_date = "{0}{1}".format(card.expiry_year, card.expiry_month)
         track2_data = "{0}D{1}{2}123400001230".format(
             card.pan, expiry_date, card.service_code

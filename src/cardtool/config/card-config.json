@@ -55,6 +55,9 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "label": {
+          "type": "string"
+        },
         "pan": {
           "type": "string",
           "pattern": "^[0-9]{16,19}$"

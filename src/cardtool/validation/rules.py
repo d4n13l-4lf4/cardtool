@@ -8,6 +8,7 @@ def length_between(min: int, max: int):
             raise ValueError(
                 "{0} length is not between ({1}, {2})".format(data, min, max)
             )
+        return data
 
     return __inner_
 
@@ -19,6 +20,7 @@ def length(total: int):
             raise ValueError(
                 "{0} does not have required length {1}".format(data, total)
             )
+        return data
 
     return __inner_
 
@@ -31,5 +33,6 @@ def regex(pattern: str, flags: re.RegexFlag = 0):
             raise ValueError(
                 "{0} does not conform with required pattern {1}".format(data, pattern)
             )
+        return data
 
     return __inner_

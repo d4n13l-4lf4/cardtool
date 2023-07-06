@@ -1,3 +1,4 @@
+import re
 from contextlib import nullcontext as does_not_raise
 
 import pytest
@@ -23,7 +24,8 @@ from cardtool.validation.rules import length, length_between, regex
 def test_should_validate_expected_length_when_called(input, rule, expectation):
     with expectation:
         validate = length(rule)
-        validate(input)
+        out = validate(input)
+        assert_that(out, equal_to(input))
 
 
 @pytest.mark.parametrize(
@@ -51,7 +53,8 @@ def test_should_validate_length_between_expected_range_when_called(
     with expectation as e:
         (min, max) = rule
         validate = length_between(min, max)
-        validate(input)
+        out = validate(input)
+        assert_that(out, equal_to(input))
     if e is not None:
         assert_that(e.value.args[0], equal_to(msg))
 
@@ -60,18 +63,23 @@ def test_should_validate_length_between_expected_range_when_called(
     "input,rule,expectation",
     [
         ("2" * 10, "2{1,10}", does_not_raise()),
-        ("2" * 10, "[A-Z]{1,10}", pytest.raises(ValueError)),
+        (
+            "2" * 10,
+            "[A-Z]{1,10}",
+            pytest.raises(
+                ValueError,
+                match=re.escape(
+                    "2222222222 does not conform with required pattern [A-Z]{1,10}"
+                ),
+            ),
+        ),
     ],
     ids=["valid input", "invalid input"],
 )
 def test_should_validate_str_conforms_to_expected_regex_when_called(
     input, rule, expectation
 ):
-    with expectation as e:
+    with expectation:
         validate = regex(rule, flags=0)
-        validate(input)
-    if e is not None:
-        assert_that(
-            e.value.args[0],
-            equal_to("2222222222 does not conform with required pattern [A-Z]{1,10}"),
-        )
+        out = validate(input)
+        assert_that(out, equal_to(input))

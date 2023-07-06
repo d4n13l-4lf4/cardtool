@@ -18,6 +18,7 @@ transaction:
   date: "220125"
 cards:
   - !Card
+    label: "Test"
     pan: "5477820000001234"
     pin: "1234"
     brand: "Mastercard"

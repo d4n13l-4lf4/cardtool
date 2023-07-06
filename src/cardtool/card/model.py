@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import uuid
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Type
@@ -29,6 +30,7 @@ class Card(yaml.YAMLObject):  # pragma: no cover
     expiry_year: str
     service_code: str
     sequence_number: int
+    label: str = uuid.uuid4().hex
 
 
 @dataclass(frozen=True)

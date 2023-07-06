@@ -9,43 +9,67 @@ from cardtool.validation.command import apply_in_order, validate_string_callable
 
 
 @pytest.mark.parametrize(
-    "input,exception,expectation",
+    "input,validators,expected_out,expectation",
     [
-        ("1", None, does_not_raise()),
-        ("2", ValueError("error"), pytest.raises(ValueError, match="error")),
+        (
+            "1",
+            [Mock(return_value="21"), Mock(return_value="12")],
+            "12",
+            does_not_raise(),
+        ),
+        (
+            "2",
+            [Mock(return_value="12"), Mock(side_effect=ValueError("error"))],
+            None,
+            pytest.raises(ValueError, match="^error$"),
+        ),
     ],
     ids=["valid input", "invalid input"],
 )
 def test_should_trigger_a_chain_of_validators_when_called(
-    input, exception, expectation
+    input, validators, expected_out, expectation
 ):
     with expectation:
-        first_validator = Mock()
-        second_validator = Mock(side_effect=exception)
-        validate = apply_in_order(first_validator, second_validator)
-        validate(input)
-
-    first_validator.assert_called_with(input)
-    second_validator.assert_called_with(input)
+        validate = apply_in_order(*validators)
+        out = validate(input)
+        assert_that(out, equal_to(expected_out))
+        first_validator = validators[0]
+        first_validator.assert_called_with(input)
+    for validator in reversed(validators[1:]):
+        previous_validator = validators[validators.index(validator) - 1]
+        validator.assert_called_with(previous_validator())
 
 
 @pytest.mark.parametrize(
-    "input,exception,expectation",
+    "input,validator,expected_out,expectation",
     [
-        ("1", None, does_not_raise()),
-        ("2", ValueError("error"), pytest.raises(click.BadParameter, match="error")),
+        ("1", Mock(return_value="1"), "1", does_not_raise()),
+        (
+            "2",
+            Mock(side_effect=ValueError("error")),
+            None,
+            pytest.raises(click.BadParameter, match="error"),
+        ),
         (
             3,
-            ValueError("parameter is not string"),
-            pytest.raises(click.BadParameter, match="parameter is not string"),
+            Mock(side_effect=ValueError("parameter is not string")),
+            None,
+            pytest.raises(click.BadParameter, match="^parameter is not string$"),
         ),
+        ("2", Mock(return_value="21"), "21", does_not_raise()),
     ],
-    ids=["valid input", "invalid input", "invalid int input"],
+    ids=[
+        "valid input",
+        "invalid input",
+        "invalid int input",
+        "valid input with transform",
+    ],
 )
-def test_should_validate_an_option_when_called(input, exception, expectation):
+def test_should_validate_an_option_when_called(
+    input, validator, expected_out, expectation
+):
     with expectation:
-        validator = Mock(side_effect=exception)
         callable_validator = validate_string_callable(validator)
         out = callable_validator({}, "", input)
         validator.assert_called_with(input)
-        assert_that(out, equal_to(input))
+        assert_that(out, equal_to(expected_out))
