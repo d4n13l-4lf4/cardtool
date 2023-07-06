@@ -2,7 +2,7 @@
 version: "0.1"
 terminal:
   !Terminal
-  country: Mexico
+  country: MEX
 key:
   shared:
     !Key
@@ -10,7 +10,7 @@ key:
     ksn: FFFF4545450000100002
 transaction:
   !Transaction
-  country: Mexico
+  country: MEX
   type: charge
   amount: 10.2
   other_amount: 10.23
