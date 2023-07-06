@@ -1,5 +1,8 @@
+import functools
+
 import pydash.objects
 
+from cardtool.card.cipher import get_encrypt_card
 from cardtool.card.data import CardGen
 from cardtool.card.dump import CardDumper
 from cardtool.card.model import CardConfig, Key
@@ -14,4 +17,10 @@ def bootstrap(config: CardConfig, format: str) -> CardDumper:
     cipher = DUKPTCipher(
         bdk=shared_keys.bdk, ksn=shared_keys.ksn, derive_key=generate_key
     )
-    return CardDumper(cipher, CardGen(generate_pin_block), new_serializer(format))
+    callable_cipher = get_encrypt_card(cipher)
+    card_generator = CardGen(generate_pin_block).generate_data
+    callable_generator = functools.partial(
+        card_generator, terminal=config.terminal, transaction=config.transaction
+    )
+    serializer = new_serializer(format)
+    return CardDumper(callable_cipher, callable_generator, serializer)
