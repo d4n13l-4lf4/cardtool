@@ -16,9 +16,6 @@
         "other_amount": {
           "type": "number"
         },
-        "country": {
-          "type": "string"
-        },
         "type": {
           "type": "string",
           "enum": ["charge", "balance", "cash", "credit voucher", "void"]
@@ -34,7 +31,7 @@
           "type": "integer"
         }
       },
-      "required": ["amount", "country", "type", "currency", "date", "counter"]
+      "required": ["amount", "type", "currency", "date", "counter"]
     },
     "key": {
       "type": "object",

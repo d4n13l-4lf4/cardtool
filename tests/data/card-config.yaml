@@ -10,7 +10,6 @@ key:
     ksn: FFFF4545450000100002
 transaction:
   !Transaction
-  country: MEX
   type: charge
   amount: 10.2
   other_amount: 10.23

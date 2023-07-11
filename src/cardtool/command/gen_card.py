@@ -48,7 +48,8 @@ def init_gen_card(bootstrap: Callable[[CardConfig, str], Dumper]):
     def __inner_(config: CardConfig, fmt: str, out_file: str):
         with Pool(os.cpu_count()) as p:
             dumper = bootstrap(config, fmt)
-            dumper.dump_cards(out_file, config, p.imap)
+            imap = functools.partial(p.imap_unordered, chunksize=10)
+            dumper.dump_cards(out_file, config, imap)
             click.echo("Done!")
 
     return __inner_
