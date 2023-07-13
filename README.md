@@ -44,7 +44,7 @@ A command to generate a file with encrypted card data using DUKPT key derivation
 cardtool gen-card -cfg <path_to_config_yaml> -fmt json|yaml path_to_dump_card_data.[json|yaml]
 ```
 
-### Configuration reference file
+### Card data generation configuration file
 
 ---
 The following is a reference configuration file for the gen-card command.
