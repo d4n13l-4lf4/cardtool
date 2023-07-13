@@ -3,4 +3,59 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A card data generation tool with DUKPT key derivation
+A card data generation tool with DUKPT key derivation.
+
+The following is a reference configuration file for the gen-card command.
+```yaml
+# current version of command
+version: "0.1" 
+# terminal information
+terminal:
+  !Terminal
+  # terminal country
+  country: MEX
+# encryption keys
+key:
+  # keys used to encrypt both data and pin
+  shared:
+    !Key
+    # base derivation key
+    bdk: 0123456789ABCDEFFEDCBA9876543210
+    # key serial number
+    ksn: FFFF4545450000100002
+# transaction information
+transaction:
+  !Transaction
+  # type of transaction
+  type: charge
+  # transaction amount
+  amount: 10.2
+  # another transaction amount, e.g., cashback amount
+  other_amount: 10.23
+  # transaction currency
+  currency: USD
+  # date of transaction with DDMMYY format
+  date: "220125"
+# array of cards to generate
+cards:
+  - !Card
+    # card label, useful as an identifier for this card
+    label: "Test"
+    # primary account number 16-19 digits
+    pan: "5477820000001234"
+    # card pin 4-6 digits
+    pin: "1234"
+    # card brand (Visa, Mastercard, Carnet)
+    brand: "Mastercard"
+    # cardholder name
+    cardholder_name: Test 1
+    # card expiry month
+    expiry_month: "12"
+    # card expiry year
+    expiry_year: "24"
+    # card service code
+    service_code: "201"
+    # card sequence number
+    sequence_number: 1
+
+```
