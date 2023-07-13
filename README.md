@@ -5,8 +5,51 @@
 
 A card data generation tool with DUKPT key derivation.
 
+### Installation
+
+---
+You should have python 3.9 or later to run this tool. So, please be sure you have the python interpreter installed before trying this setup guide.
+
+Create a virtual environment:
+```bash
+python3 -m venv .env
+```
+Activate the virtual environment:
+```bash
+source activate .env/bin/activate
+```
+For testing purposes with alpha or beta versions, install this tool from [TestPyPi](https://test.pypi.org/):
+```bash
+pip3 install -U --extra-index-url https://test.pypi.org/simple/ cardtool
+```
+
+Finally, use it:
+```bash
+cardtool --help
+```
+
+### Commands reference
+
+---
+#### Key decryption
+A command to decrypt a TR-31 key block.
+```bash
+cardtool decrypt-key -kbpk <your_key_block_protection_key> -kcv <key_check_value> YOUR_KEY_BLOCK
+
+```
+
+#### Card data generation
+A command to generate a file with encrypted card data using DUKPT key derivation.
+```bash 
+cardtool gen-card -cfg <path_to_config_yaml> -fmt json|yaml path_to_dump_card_data.[json|yaml]
+```
+
+### Configuration reference file
+
+---
 The following is a reference configuration file for the gen-card command.
 ```yaml
+!CardConfig
 # current version of command
 version: "0.1" 
 # terminal information
