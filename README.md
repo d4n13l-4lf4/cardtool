@@ -16,7 +16,7 @@ python3 -m venv .env
 ```
 Activate the virtual environment:
 ```bash
-source activate .env/bin/activate
+source .env/bin/activate
 ```
 For testing purposes with alpha or beta versions, install this tool from [TestPyPi](https://test.pypi.org/):
 ```bash
