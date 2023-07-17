@@ -22,7 +22,6 @@ class TestGenerator:
             (
                 Terminal(country="MEX"),
                 Transaction(
-                    country="MEX",
                     currency="MXN",
                     other_amount=12.20,
                     amount=11.34,
@@ -51,7 +50,6 @@ class TestGenerator:
             (
                 Terminal(country="FAKE"),
                 Transaction(
-                    country="FAKE",
                     currency="FAKE",
                     other_amount=12.10,
                     amount=11.35,
@@ -81,7 +79,6 @@ class TestGenerator:
             (
                 Terminal(country="ARG"),
                 Transaction(
-                    country="ARG",
                     currency="ARS",
                     other_amount=12.10,
                     amount=11.35,

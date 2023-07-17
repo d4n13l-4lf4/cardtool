@@ -45,7 +45,6 @@ class Terminal(yaml.YAMLObject):  # pragma: no cover
 class Transaction(yaml.YAMLObject):  # pragma: no cover
     yaml_tag = "!Transaction"
     yaml_loader = yaml.SafeLoader
-    country: str = ""
     type: str = ""
     amount: float = 0.0
     other_amount: float = 0.0

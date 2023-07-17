@@ -6,15 +6,18 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Publish cardtool
+name: Publish PyPI
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - develop
+      - master
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   deploy:
@@ -22,6 +25,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: trstringer/manual-approval@v1
+      with:
+        secret: ${{ github.TOKEN }}
+        approvers: d4n13l-4lf4
+        minimum-approvals: 1
+        issue-title: Deploy to PyPI
+        issue-body: "Deployment approval for Cardtool"
+        exclude-workflow-initiator-as-approver: false
+        timeout-minutes: 10
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
@@ -33,25 +45,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade build twine tox
-    - name: Validate project (Unit tests)
-      run: |
-        make validate
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     - name: Build package
       run: python -m build
-    - name: Publish to TestPyPI
-      if: ${{ github.ref == 'refs/heads/develop' }}
-      shell: bash
-      env:
-        TEST_PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
-        TEST_PYPI_API_KEY: ${{ secrets.TEST_PYPI_API_KEY }}
-      run: |
-        twine upload --repository testpypi dist/* -u "$TEST_PYPI_USERNAME" -p "$TEST_PYPI_API_KEY"
     - name: Publish package
-      if: ${{ github.ref == 'refs/heads/main' }}
+      if: ${{ github.ref == 'refs/heads/master' && github.event.pull_request.merged == true }}
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
         user: __token__

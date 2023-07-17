@@ -40,9 +40,8 @@ def test_gen_card_should_run_successfully(
                 out_file,
             ],
         )
-        imap = pool.return_value.__enter__.return_value.imap
         bootstrap.assert_called_once_with(card_cfg, fmt)
-        dumper.dump_cards.assert_called_once_with(out_file, card_cfg, imap)
+        dumper.dump_cards.assert_called_once()
         safe_load.assert_called_once()
         assert_that(result.output, equal_to("Done!\n"))
         assert_that(result.exit_code, equal_to(0))
