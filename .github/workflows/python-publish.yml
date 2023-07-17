@@ -12,6 +12,11 @@ on:
   push:
     branches:
       - develop
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
 
 permissions:
   contents: read
@@ -51,7 +56,7 @@ jobs:
       run: |
         twine upload --repository testpypi dist/* -u "$TEST_PYPI_USERNAME" -p "$TEST_PYPI_API_KEY"
     - name: Publish package
-      if: ${{ github.ref == 'refs/heads/main' }}
+      if: ${{ github.ref == 'refs/heads/master' && github.event.pull_request.merged == true }}
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
         user: __token__
