@@ -19,9 +19,13 @@ Activate the virtual environment:
 ```bash
 source .env/bin/activate
 ```
-For testing purposes with alpha or beta versions, install this tool from [TestPyPi](https://test.pypi.org/):
+For testing purposes with alpha or beta versions, install this tool from [TestPyPI](https://test.pypi.org/):
 ```bash
 pip3 install -U --extra-index-url https://test.pypi.org/simple/ cardtool
+```
+Otherwise, install this tool from [PyPI](https://pypi.org/):
+```bash
+pip3 install cardtool
 ```
 
 Finally, use it:
