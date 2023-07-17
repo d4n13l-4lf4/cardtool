@@ -21,7 +21,7 @@ source .env/bin/activate
 ```
 For testing purposes with alpha or beta versions, install this tool from [TestPyPI](https://test.pypi.org/):
 ```bash
-pip3 install -U --extra-index-url https://test.pypi.org/simple/ cardtool
+pip3 install -U --extra-index-url https://test.pypi.org/simple/ cardtool==x.y.z[ab]N
 ```
 Otherwise, install this tool from [PyPI](https://pypi.org/):
 ```bash
