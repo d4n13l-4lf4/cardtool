@@ -1,6 +1,5 @@
 # Cardtool
-[![Publish cardtool](https://github.com/d4n13l-4lf4/cardtool/actions/workflows/python-publish.yml/badge.svg)](https://github.com/d4n13l-4lf4/cardtool/actions/workflows/python-publish.yml)
-[![Publish cardtool](https://github.com/d4n13l-4lf4/cardtool/actions/workflows/python-publish.yml/badge.svg)](https://github.com/d4n13l-4lf4/cardtool/actions/workflows/python-publish.yml)
+[![PyPI version](https://badge.fury.io/py/cardtool.svg)](https://badge.fury.io/py/cardtool)
 [![codecov](https://codecov.io/gh/d4n13l-4lf4/cardtool/branch/master/graph/badge.svg?token=1CUDZLNZ9S)](https://codecov.io/gh/d4n13l-4lf4/cardtool)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -20,9 +19,13 @@ Activate the virtual environment:
 ```bash
 source .env/bin/activate
 ```
-For testing purposes with alpha or beta versions, install this tool from [TestPyPi](https://test.pypi.org/):
+For testing purposes with alpha or beta versions, install this tool from [TestPyPI](https://test.pypi.org/):
 ```bash
 pip3 install -U --extra-index-url https://test.pypi.org/simple/ cardtool
+```
+Otherwise, install this tool from [PyPI](https://pypi.org/):
+```bash
+pip3 install cardtool
 ```
 
 Finally, use it:
