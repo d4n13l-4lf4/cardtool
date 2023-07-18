@@ -1,5 +1,6 @@
 from unittest.mock import Mock
 
+import pydash
 import pytest
 from hamcrest import assert_that, equal_to
 
@@ -10,20 +11,29 @@ from helper.common import KSN, PLAINTEXT_KEY
 
 class TestDUKPTCipher:
     @pytest.mark.parametrize(
-        "data,expected",
+        "data,pad,expected",
         [
-            ("F" * 16, "1BFC569203335B41"),
-            ("F" * 18, "1BFC569203335B4156FA8D87902CF18F"),
+            (
+                "5477820000001234D2412201123400001230",
+                None,
+                "9076A0E140E525196648A60566D7A7D40276A2742A5C54E6",
+            ),
+            (
+                "5477820000001234D2412201123400001230",
+                0xFF,
+                "9076A0E140E525196648A60566D7A7D4D6A98F2875E99D15",
+            ),
         ],
         ids=["called with complete data", "called with data to be padded"],
     )
     def test_cipher_should_encrypt_data_successfully_when_(
-        self, data: str, expected: str
+        self, data: str, pad: int, expected: str
     ):
         derive_key = Mock()
         derive_key.return_value = "CA7091701C616F92697955B77E723D27"
         cipher = DUKPTCipher(PLAINTEXT_KEY, KSN, derive_key)
-        encrypted = cipher.encrypt(data, KeyType.DATA)
+        pad_byte = pydash.default_to(pad, 0x00)
+        encrypted = cipher.encrypt(data, KeyType.DATA, pad_byte)
 
         derive_key.assert_called_with(PLAINTEXT_KEY, KSN, KeyType.DATA)
         assert_that(encrypted, equal_to(expected))

@@ -9,7 +9,9 @@ from cardtool.dukpt.key_type import KeyType
 
 class Cipher(ABC):
     @abstractmethod
-    def encrypt(self, data: str, key: KeyType) -> str:  # pragma: no cover
+    def encrypt(
+        self, data: str, key: KeyType, pad: int = 0x00
+    ) -> str:  # pragma: no cover
         pass
 
     @abstractmethod
@@ -25,7 +27,7 @@ class DUKPTCipher(Cipher):
         self.__bdk_ = bdk
         self.__ksn_ = ksn
 
-    def encrypt(self, data: str, key: KeyType) -> str:
+    def encrypt(self, data: str, key: KeyType, pad: int = 0x00) -> str:
         key = self.__get_key_(key)
 
         encrypt = DES3.new(
@@ -35,7 +37,7 @@ class DUKPTCipher(Cipher):
         data_to_encrypt = (
             raw_data
             if (len(raw_data) % 8 == 0)
-            else DUKPTCipher.__append_bytes_(raw_data, 8 - (len(raw_data) % 8))
+            else DUKPTCipher.__append_bytes_(raw_data, 8 - (len(raw_data) % 8), pad)
         )
 
         encrypted = encrypt.encrypt(data_to_encrypt)
@@ -54,9 +56,9 @@ class DUKPTCipher(Cipher):
         return encrypted.hex().upper()
 
     @staticmethod
-    def __append_bytes_(data: bytes, n: int) -> bytes:
+    def __append_bytes_(data: bytes, n: int, pad: int) -> bytes:
         bt = bytearray(data)
-        [bt.append(0x00) for _ in range(n)]
+        [bt.append(pad) for _ in range(n)]
         return bytes(bt)
 
     @cache
