@@ -109,10 +109,14 @@
     "key": {
       "additionalProperties": false,
       "properties": {
-        "shared": {
+        "data": {
+          "$ref": "#/definitions/key"
+        },
+        "pin": {
           "$ref": "#/definitions/key"
         }
-      }
+      },
+      "required": ["data", "pin"]
     },
     "transaction": {
       "$ref": "#/definitions/transaction"

@@ -4,10 +4,14 @@ terminal:
   !Terminal
   country: MEX
 key:
-  shared:
-    !Key
-    bdk: 0123456789ABCDEFFEDCBA9876543210
-    ksn: FFFF4545450000100002
+    data:
+      !Key
+      bdk: 0123456789ABCDEFFEDCBA9876543210
+      ksn: FFFF4545450000100002
+    pin:
+      !Key
+      bdk: 0123456789ABCDEFFEDCBA9876543210
+      ksn: FFFF4545450000100002
 transaction:
   !Transaction
   type: charge
@@ -26,4 +30,3 @@ cards:
     expiry_year: "24"
     service_code: "201"
     sequence_number: 1
-

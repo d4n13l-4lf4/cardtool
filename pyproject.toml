@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cardtool"
 authors = [
-    {name = "Daniel Aucatoma"}
+    {name = "Daniel Aucatoma", email = "d4n13l.4lf4@gmail.com"}
 ]
 description = "An encrypted card generator tool"
 readme = "README.md"
