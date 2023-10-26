@@ -64,8 +64,15 @@ terminal:
   country: MEX
 # encryption keys
 key:
-  # keys used to encrypt both data and pin
-  shared:
+  # keys used to encrypt data
+  data:
+    !Key
+    # base derivation key
+    bdk: 0123456789ABCDEFFEDCBA9876543210
+    # key serial number
+    ksn: FFFF4545450000100002
+  # keys used to encrypt pin
+  pin:
     !Key
     # base derivation key
     bdk: 0123456789ABCDEFFEDCBA9876543210
