@@ -51,12 +51,13 @@ pyproject_hooks==1.0.0
 pyrsistent==0.19.3
 pytest==7.3.1
 pytest-cov==4.0.0
-PyYAML==6.0
+PyYAML==6.0.3
 readme-renderer==37.3
 requests==2.31.0
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==13.4.1
+setuptools==80.9.0
 setuptools-scm==7.1.0
 simplejson==3.19.1
 six==1.16.0
